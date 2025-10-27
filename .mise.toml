@@ -1,0 +1,50 @@
+# Python mise Template - mise configuration
+# This file manages development tool versions and tasks for your Python project
+
+[tools]
+# Python 3.11 - recommended for stable production use
+python = "3.11"
+# uv - fast Python package installer (alternative to pip)
+uv = "latest"
+
+[env]
+# Automatically create and manage a virtual environment
+_.python.venv = { path = ".venv", create = true }
+
+[settings]
+# Enable experimental features for better virtual environment integration
+experimental = true
+
+[tasks.format]
+description = "Format code with black and ruff"
+run = [
+    "black src tests",
+    "ruff check --fix src tests"
+]
+
+[tasks.lint]
+description = "Check code style without fixing"
+run = [
+    "black --check src tests",
+    "ruff check src tests"
+]
+
+[tasks.type-check]
+description = "Run mypy type checking"
+run = "mypy src"
+
+[tasks.test]
+description = "Run tests with pytest"
+run = "pytest tests -vv"
+
+[tasks.test-cov]
+description = "Run tests with coverage report"
+run = "pytest tests -vv --cov=src --cov-report=term-missing"
+
+[tasks.dev]
+description = "Run the main script in development mode"
+run = "python src/main.py"
+
+[tasks.install]
+description = "Install all dependencies"
+run = "uv pip install -e .[dev]"
